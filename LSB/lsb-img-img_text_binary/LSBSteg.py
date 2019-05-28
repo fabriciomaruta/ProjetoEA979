@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 # coding:UTF-8
 """LSBSteg.py
-
 Usage:
   LSBSteg.py encode -i <input> -o <output> -f <file>
   LSBSteg.py decode -i <input> -o <output>
-
 Options:
   -h, --help                Show this help
   --version                 Show the version
@@ -13,6 +11,7 @@ Options:
   -i,--in=<input>           Input image (carrier)
   -o,--out=<output>         Output image (or extracted file)
 """
+
 from cv2 import cv2
 import docopt
 import numpy as np
@@ -170,7 +169,7 @@ def main():
     args = docopt.docopt(__doc__, version="0.2")
     in_f = args["--in"]
     out_f = args["--out"]
-    in_img = cv2.imread(in_f, 0)
+    in_img = cv2.imread(in_f)
     steg = LSBSteg(in_img)
 
     if args['encode']:
