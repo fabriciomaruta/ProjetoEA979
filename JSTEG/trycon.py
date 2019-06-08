@@ -12,8 +12,9 @@ response_ar[0][1] = 0
 i=0
 print(response_ar)
 while i < len(response_ar[0]):
+    response_ar[0][0] = len(a)
     if i < len(a):
-        response_ar[0][i] = ord(a[i])
+        response_ar[0][i+1] = ord(a[i])
     
     #response_ar[1][i] = 200
     i += 1
