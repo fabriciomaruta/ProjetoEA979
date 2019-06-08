@@ -10,15 +10,14 @@ for f in hidden:
     a.append(f)
 response_ar[0][1] = 0
 i=0
-print(response_ar)
+print(len(response_ar[0]))
+print(len(response_ar[1]))
 while i < len(response_ar[0]):
     response_ar[0][0] = len(a)
     if i < len(a):
         response_ar[0][i+1] = ord(a[i])
-    
     #response_ar[1][i] = 200
     i += 1
-
 print(response_ar)
 image.save("out.jpg", qtables=response_ar)
 
