@@ -73,7 +73,7 @@ class Steganography(object):
 
         #Create two lists of randomized numbers
         pixel_list1 = random.sample(range(img2.size[0]), img2.size[0])
-        pixel_list2 = random.sample(range(img2.size[1]), img2.size[1])
+        pixel_list2 = random.sample(range(img2.size[1]), img2.size[1])        
 
         for i in range(img1.size[0]):
             for j in range(img1.size[1]):
@@ -84,7 +84,7 @@ class Steganography(object):
 
                 # Check if the pixel map position is valid for the second image
                 if i < img2.size[0] and j < img2.size[1]:
-                    rgb2 = Steganography.__int_to_bin(pixel_map2[i, j])
+                    rgb2 = Steganography.__int_to_bin(pixel_map2[pixel_list1[i], pixel_list2[j]])
 
                 # Merge the two pixels and convert it to a integer tuple
                 rgb = Steganography.__merge_rgb(rgb1, rgb2)
@@ -111,14 +111,17 @@ class Steganography(object):
         # Tuple used to store the image original size
         original_size = img.size
 
-        #Create two lists of randomized numbers
-        pixel_list1 = random.sample(range(original_size[0]), original_size[0])
-        pixel_list2 = random.sample(range(original_size[1]), original_size[1])
+        random.seed(9001)
 
-        for i in range(img.size[0]):
-            for j in range(img.size[1]):
-                # Get the RGB (as a string tuple) from the current pixel    
-                r, g, b = Steganography.__int_to_bin(pixel_map[i, j])
+        #Create two lists of randomized numbers
+        pixel_list1 = random.sample(range(478), 478)
+        pixel_list2 = random.sample(range(295), 295)        
+
+        for i in range(478):
+            for j in range(295):
+                # Get the RGB (as a string tuple) from the current pixel  
+            
+                r, g, b = Steganography.__int_to_bin(pixel_map[i,j])
 
                 # Extract the last 4 bits (corresponding to the hidden image)
                 # Concatenate 4 zero bits because we are working with 8 bit
@@ -127,7 +130,7 @@ class Steganography(object):
                        b[4:] + '0000')
 
                 # Convert it to an integer tuple
-                pixels_new[i, j] = Steganography.__bin_to_int(rgb)
+                pixels_new[pixel_list1[i], pixel_list2[j]] = Steganography.__bin_to_int(rgb)
 
                 # If this is a 'valid' position, store it
                 # as the last valid position
