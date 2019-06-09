@@ -4,6 +4,7 @@
 import click
 from PIL import Image
 import random
+import os
 
 class Steganography(object):
 
@@ -48,7 +49,33 @@ class Steganography(object):
         return rgb
 
     @staticmethod
-    def merge(img1, img2):
+    def decrypt(img, code):
+        
+        # Tuple used to store the image cropped size
+        cropped_size = img.size
+      
+        #Create the pixel map
+        pixel_map = img.load()
+    
+        # Create the new image and load the pixel map
+        new_image = Image.new(img.mode, img.size)
+        pixels_new = new_image.load()
+
+        # Set the seed
+        random.seed(code)
+
+        #Create two lists of randomized numbers
+        pixel_list1 = random.sample(range(cropped_size[0]), cropped_size[0])
+        pixel_list2 = random.sample(range(cropped_size[1]), cropped_size[1])     
+
+        for i in range(cropped_size[0]):
+            for j in range(cropped_size[1]):
+                pixels_new[pixel_list1[i], pixel_list2[j]] = pixel_map[i, j]
+
+        return new_image
+
+    @staticmethod
+    def merge(img1, img2, code):
         """Merge two images. The second one will be merged into the first one.
 
         :param img1: First image
@@ -69,7 +96,7 @@ class Steganography(object):
         pixels_new = new_image.load()
 
         #Choose a seed to random numbers
-        random.seed(9001)
+        random.seed(code)
 
         #Create two lists of randomized numbers
         pixel_list1 = random.sample(range(img2.size[0]), img2.size[0])
@@ -94,7 +121,7 @@ class Steganography(object):
         return new_image
 
     @staticmethod
-    def unmerge(img):
+    def unmerge(img, code):
         """Unmerge an image.
 
         :param img: The input image.
@@ -111,14 +138,8 @@ class Steganography(object):
         # Tuple used to store the image original size
         original_size = img.size
 
-        random.seed(9001)
-
-        #Create two lists of randomized numbers
-        pixel_list1 = random.sample(range(478), 478)
-        pixel_list2 = random.sample(range(295), 295)        
-
-        for i in range(478):
-            for j in range(295):
+        for i in range(original_size[0]):
+            for j in range(original_size[1]):
                 # Get the RGB (as a string tuple) from the current pixel  
             
                 r, g, b = Steganography.__int_to_bin(pixel_map[i,j])
@@ -130,7 +151,7 @@ class Steganography(object):
                        b[4:] + '0000')
 
                 # Convert it to an integer tuple
-                pixels_new[pixel_list1[i], pixel_list2[j]] = Steganography.__bin_to_int(rgb)
+                pixels_new[i, j] = Steganography.__bin_to_int(rgb)
 
                 # If this is a 'valid' position, store it
                 # as the last valid position
@@ -140,7 +161,7 @@ class Steganography(object):
         # Crop the image based on the 'valid' pixels
         new_image = new_image.crop((0, 0, original_size[0], original_size[1]))
 
-        return new_image
+        return(Steganography.decrypt(new_image, code))
 
 
 @click.group()
@@ -153,16 +174,21 @@ def cli():
 @click.option('--img2', required=True, type=str, help='Image that will be hidden')
 @click.option('--output', required=True, type=str, help='Output image')
 def merge(img1, img2, output):
-    merged_image = Steganography.merge(Image.open(img1), Image.open(img2))
+    code = int(input("Entre com o codigo: "))
+    merged_image = Steganography.merge(Image.open(img1), Image.open(img2), code)
     merged_image.save(output)
+    os.system("make display-steg")
 
 
 @cli.command()
 @click.option('--img', required=True, type=str, help='Image that will be hidden')
+#@click.option('--code', required=False, type=int, help='Code to decrypt the image correctly')
 @click.option('--output', required=True, type=str, help='Output image')
 def unmerge(img, output):
-    unmerged_image = Steganography.unmerge(Image.open(img))
+    code = int(input("Entre com o codigo: "))
+    unmerged_image = Steganography.unmerge(Image.open(img), code)
     unmerged_image.save(output)
+    os.system("make display-un")
 
 
 if __name__ == '__main__':
