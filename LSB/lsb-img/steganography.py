@@ -3,7 +3,6 @@
 
 import click
 from PIL import Image
-import random
 
 class Steganography(object):
 
@@ -67,14 +66,7 @@ class Steganography(object):
         # Create a new image that will be outputted
         new_image = Image.new(img1.mode, img1.size)
         pixels_new = new_image.load()
-
-        #Choose a seed to random numbers
-        random.seed(9001)
-
-        #Create two lists of randomized numbers
-        pixel_list1 = random.sample(range(img2.size[0]), img2.size[0])
-        pixel_list2 = random.sample(range(img2.size[1]), img2.size[1])
-
+    
         for i in range(img1.size[0]):
             for j in range(img1.size[1]):
                 rgb1 = Steganography.__int_to_bin(pixel_map1[i, j])
@@ -111,14 +103,11 @@ class Steganography(object):
         # Tuple used to store the image original size
         original_size = img.size
 
-        #Create two lists of randomized numbers
-        pixel_list1 = random.sample(range(original_size[0]), original_size[0])
-        pixel_list2 = random.sample(range(original_size[1]), original_size[1])
-
-        for i in range(img.size[0]):
-            for j in range(img.size[1]):
-                # Get the RGB (as a string tuple) from the current pixel    
-                r, g, b = Steganography.__int_to_bin(pixel_map[i, j])
+        for i in range(original_size[0]):
+            for j in range(original_size[1]):
+                # Get the RGB (as a string tuple) from the current pixel  
+            
+                r, g, b = Steganography.__int_to_bin(pixel_map[i,j])
 
                 # Extract the last 4 bits (corresponding to the hidden image)
                 # Concatenate 4 zero bits because we are working with 8 bit
