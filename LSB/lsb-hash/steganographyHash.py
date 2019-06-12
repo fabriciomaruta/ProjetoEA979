@@ -4,7 +4,6 @@
 import click
 from PIL import Image
 import random
-import os
 
 class Steganography(object):
 
@@ -174,10 +173,9 @@ def cli():
 @click.option('--img2', required=True, type=str, help='Image that will be hidden')
 @click.option('--output', required=True, type=str, help='Output image')
 def merge(img1, img2, output):
-    code = int(input("Entre com o codigo: "))
+    code = int(input("Entre com o codigo para criptografar: "))
     merged_image = Steganography.merge(Image.open(img1), Image.open(img2), code)
     merged_image.save(output)
-    os.system("make display-steg")
 
 
 @cli.command()
@@ -185,10 +183,9 @@ def merge(img1, img2, output):
 #@click.option('--code', required=False, type=int, help='Code to decrypt the image correctly')
 @click.option('--output', required=True, type=str, help='Output image')
 def unmerge(img, output):
-    code = int(input("Entre com o codigo: "))
+    code = int(input("Entre com o codigo para descriptografar: "))
     unmerged_image = Steganography.unmerge(Image.open(img), code)
     unmerged_image.save(output)
-    os.system("make display-un")
 
 
 if __name__ == '__main__':

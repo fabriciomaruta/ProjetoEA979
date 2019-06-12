@@ -29,6 +29,16 @@ merged_image.save(output)
 
 **Note**: the **output image** from the **merge operation** and the **input image** for the **unmerge operation** must be in **PNG** format.
 
+## Script
+
+
+Bash commands for automated testing.
+
+```
+chmod +x
+./test.sh
+```
+
 ## Steganography
 
 Let’s understand what is steganography, digital images, pixels, and color models.
