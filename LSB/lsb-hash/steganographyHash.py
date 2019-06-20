@@ -1,6 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+    Author: Kelvin S. do Prado
+    Modified by: Leonardo Rodrigues Marques
+                 Joao Victor da Conceicao Munhoz
+                 Victor Saldanha da Silveira
+'''
+
+
 import click
 from PIL import Image
 import random
